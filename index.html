@@ -34,7 +34,7 @@
 }
 html.a11y-fs1{font-size:16px}html.a11y-fs2{font-size:18px}html.a11y-fs3{font-size:22px}
 html{height:100%}body{min-height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-weight:500;-webkit-tap-highlight-color:transparent;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-weight:500;overflow-wrap:anywhere;-webkit-tap-highlight-color:transparent;line-height:1.6}
 .wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 88px;display:flex;flex-direction:column;gap:14px;min-height:100vh;box-sizing:border-box}
 .wrap.wide{max-width:980px}
 header{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:52px}
@@ -66,7 +66,7 @@ button.sub:disabled,button.main:disabled{opacity:.45;cursor:default}
 .langs button[aria-pressed="true"]{background:var(--imo);color:#fff;border-color:var(--imo)}
 .tip{background:var(--ki2);border:2px solid var(--ki);border-radius:14px;padding:.6rem .9rem;font-size:.9rem;line-height:1.7;text-align:left}
 .tip b{color:var(--imo2)}
-.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.facts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .facts div{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:8px;text-align:center;font-size:.8rem;color:var(--ink2);line-height:1.4}
 .facts b{display:block;font-size:1.3rem;color:var(--ink)}
 /* お客さんと手札 */
@@ -86,7 +86,7 @@ button.sub:disabled,button.main:disabled{opacity:.45;cursor:default}
   .side .main{min-height:52px}
 }
 .hand{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.card{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:1.8rem 1fr;gap:2px 8px;align-items:center;min-height:56px;padding:6px 10px;border-radius:12px;border:2px solid var(--line);background:var(--paper);font-size:.88rem;line-height:1.35}
+.card{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:2px 8px;align-items:center;min-height:56px;padding:6px 10px;border-radius:12px;border:2px solid var(--line);background:var(--paper);font-size:.88rem;line-height:1.35}
 .card .ic{font-size:1.3rem;grid-row:span 2;text-align:center}
 .card b{font-weight:800}
 .card small{font-size:.72rem;color:var(--ink2)}
@@ -95,14 +95,14 @@ button.sub:disabled,button.main:disabled{opacity:.45;cursor:default}
 .card.used b::before{content:"✓ ";color:var(--ok)}
 .card.must b::after{content:" ★";color:var(--imo)}
 .tt{display:flex;flex-direction:column;gap:4px}
-.slot{display:grid;grid-template-columns:4.6rem 1fr 3.4rem;align-items:center;gap:6px;min-height:48px}
+.slot{display:grid;grid-template-columns:4.6rem minmax(0,1fr) 3.4rem;align-items:center;gap:6px;min-height:48px}
 .slot .tm{font-weight:800;font-size:.85rem;text-align:right;line-height:1.2}
 .slot .tm small{display:block;font-weight:500;font-size:.68rem;color:var(--ink2)}
 .slot .cr{font-size:.68rem;color:var(--ink2);text-align:center;line-height:1.2}
 .slot .cr i{display:block;height:6px;border-radius:3px;background:var(--imo);margin:2px auto 0}
 .slot.night{min-height:64px}
 .slot.night .cell{background:#efe9dd}
-.cell{all:unset;box-sizing:border-box;min-height:46px;border-radius:10px;border:2px dashed var(--line);display:flex;align-items:center;gap:6px;padding:4px 10px;font-size:.88rem;background:#fff}
+.cell{all:unset;box-sizing:border-box;min-width:0;min-height:46px;border-radius:10px;border:2px dashed var(--line);display:flex;align-items:center;gap:6px;padding:4px 10px;font-size:.88rem;background:#fff}
 button.cell{cursor:pointer}
 .cell.can{border:2px solid var(--imo);background:#f7eef3;font-weight:700;color:var(--imo2)}
 .cell.on{border:2px solid var(--ink);background:var(--ki2);font-weight:800}
@@ -127,12 +127,12 @@ button.cell{cursor:pointer}
 .hint{background:var(--paper);border:2px solid var(--ki);border-radius:14px;padding:.6rem .9rem;font-size:.95rem;line-height:1.7}
 .stars{color:var(--gold);letter-spacing:.08em;font-size:1.2rem}
 .stars .off{color:#3A302B44}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .stats div{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:8px 4px;text-align:center}
 .stats b{display:block;font-size:1.3rem}
 .stats small{color:var(--ink2);font-size:.75rem}
 .share{background:var(--paper);border-radius:12px;padding:12px;white-space:pre-line;font-size:1rem;line-height:1.6;text-align:center;border:2px solid var(--line)}
-.shares{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.shares{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .shares a,.shares button{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--paper);color:var(--ink);font-size:.9rem;font-weight:700;text-decoration:none;padding:0 6px;box-sizing:border-box;font-family:inherit;cursor:pointer}
 .rlist{display:flex;flex-direction:column;gap:8px}
 .rlist div{display:flex;align-items:center;gap:10px;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:8px 12px;font-size:.88rem;line-height:1.5}

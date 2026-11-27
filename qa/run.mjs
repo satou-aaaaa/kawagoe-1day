@@ -233,6 +233,14 @@ try {
     }
     check("幅320px（とても大きい文字）・390px・PC 1280px の4言語で横にはみ出さない", bad.length === 0, bad.join(" / "));
     check("押せる所は高さ44px以上", small.length === 0, [...new Set(small)].slice(0, 8).join(",")); }
+  // 字間・行間を広げても（WCAG 1.4.12）、4言語・とても大きい文字・幅320px の遊ぶ画面がはみ出さない（英語の長い語で CI だけ落ちた。PR #1）
+  { const bad = [];
+    for (const lang of G.LANGS) { const q = await newPage(320, undefined, "?lang=" + lang); await firstClose(q);
+      await q.evaluate(() => { A11y.set("fs", 3); __kw.home(); }); await q.click("#go-d"); await q.waitForSelector("#hand");
+      await q.addStyleTag({ content: "*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}" }); await q.waitForTimeout(150);
+      const ov = await q.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth); if (ov > 0) bad.push(`${lang} ${ov}px`);
+      await q.context().close(); }
+    check("字間・行間を広げても、4言語の遊ぶ画面（幅320px・とても大きい文字）が横にはみ出さない（WCAG 1.4.12）", bad.length === 0, bad.join(" / ")); }
   // PC では手札と時間割が横に並ぶ・スマホでは点の帯が下に残る
   { const q = await newPage(1280); await firstClose(q); await q.click("#go-p"); await q.click(".lv button"); await q.waitForSelector("#hand");
     const side = await q.evaluate(() => { const a = document.querySelector("#hand").getBoundingClientRect(), b = document.querySelector("#tt").getBoundingClientRect(); return b.left > a.right - 1; });
