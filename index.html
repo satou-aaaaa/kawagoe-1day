@@ -52,9 +52,10 @@ button.sub:disabled,button.main:disabled{opacity:.45;cursor:default}
 .note{color:var(--ink2);font-size:.85rem;line-height:1.7;margin:0;text-align:center}
 .note a,.about a,.src a{color:var(--imo2);display:inline-flex;align-items:center;min-height:44px}
 .big{font-weight:900;font-size:1.45rem;text-align:center;margin:0;line-height:1.35}
-.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}
+.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;flex-wrap:wrap}
+.logo .title{flex:0 1 auto;min-width:0;overflow-wrap:anywhere}
 .logo svg{width:56px;height:56px;flex:none}
-.title{font-weight:900;font-size:1.7rem;letter-spacing:.06em;text-align:center;margin:0;color:var(--ink);line-height:1.3}
+.title{flex:none;font-weight:900;font-size:1.7rem;letter-spacing:.06em;text-align:center;margin:0;color:var(--ink);line-height:1.3}
 .title span{color:var(--imo)}
 .lead{text-align:center;color:var(--ink2);margin:0;font-size:.95rem;line-height:1.7}
 .fsrow{display:flex;gap:6px;align-items:center;justify-content:center;font-size:.85rem;color:var(--ink2);flex-wrap:wrap}
@@ -1566,7 +1567,7 @@ const T = {
     putHere: "ここに置く", remove: "押すとはずす", cont: "（つづき）", crowd: "混み", hand: "手札", timetable: "時間割",
     night: "泊まり", nightSub: "21時〜翌朝7時", morning: (h) => `翌朝${h}時`, hour: (h) => `${h}時`,
     mTime: "町にいた時間", mMoney: "使ったお金の目安", mCrowd: "混雑（住む人の困りごと）", mTotal: "合計", crowdNote: "混雑は、困りごとが少ないほど高い点",
-    hours: (h) => `${h}時間`, decide: "この旅で決める", needMust: (n) => `「${n}」を入れると決められます`, hintB: "ヒント",
+    hours: (h) => `${h}時間`, sureQ: "★3になる自信があれば押す", decide: "この旅で決める", needMust: (n) => `「${n}」を入れると決められます`, hintB: "ヒント",
     stars: (s) => `星${s}つ`, points: (n) => `${n}点`, topIs: (n) => `この手札の最高点は ${n}点`, showTop: "最高点の組み方を見る", topTitle: "最高点の組み方の一例",
     next: "次のお客さんへ", toResult: "結果を見る", quit: "ここで降りる",
     kou: {
@@ -1612,7 +1613,7 @@ const T = {
     putHere: "Put here", remove: "Tap to remove", cont: "(continued)", crowd: "Crowd", hand: "Cards", timetable: "Timetable",
     night: "Overnight", nightSub: "9 p.m.–7 a.m.", morning: (h) => `Next day ${h} a.m.`, hour: (h) => (h < 12 ? `${h} a.m.` : h === 12 ? "12 p.m." : `${h - 12} p.m.`),
     mTime: "Time in town", mMoney: "Money spent (rough)", mCrowd: "Crowding (residents' trouble)", mTotal: "Total", crowdNote: "Crowding: fewer troubles = higher score",
-    hours: (h) => `${h} h`, decide: "Decide this plan", needMust: (n) => `Add "${n}" to decide`, hintB: "Hint",
+    hours: (h) => `${h} h`, sureQ: "Sure of ★3? Tap", decide: "Decide this plan", needMust: (n) => `Add "${n}" to decide`, hintB: "Hint",
     stars: (s) => `${s} star${s > 1 ? "s" : ""}`, points: (n) => `${n} pts`, topIs: (n) => `Best possible with these cards: ${n} pts`, showTop: "Show a best plan", topTitle: "An example of the best plan",
     next: "Next guest", toResult: "See results", quit: "Stop here",
     kou: {
@@ -1658,7 +1659,7 @@ const T = {
     putHere: "放在这里", remove: "点一下取下", cont: "（续）", crowd: "拥挤", hand: "手牌", timetable: "时间表",
     night: "住宿", nightSub: "21点〜次日7点", morning: (h) => `次日${h}点`, hour: (h) => `${h}点`,
     mTime: "在街上的时间", mMoney: "花费（大概）", mCrowd: "拥挤（居民的困扰）", mTotal: "合计", crowdNote: "拥挤：困扰越少分越高",
-    hours: (h) => `${h}小时`, decide: "就这样决定", needMust: (n) => `放入「${n}」后才能决定`, hintB: "提示",
+    hours: (h) => `${h}小时`, sureQ: "有把握拿★3就点", decide: "就这样决定", needMust: (n) => `放入「${n}」后才能决定`, hintB: "提示",
     stars: (s) => `${s}颗星`, points: (n) => `${n}分`, topIs: (n) => `这组手牌的最高分是 ${n}分`, showTop: "看最高分的安排", topTitle: "最高分安排的一个例子",
     next: "下一位客人", toResult: "查看结果", quit: "到此为止",
     kou: {
@@ -1704,7 +1705,7 @@ const T = {
     putHere: "여기에 두기", remove: "누르면 빼기", cont: "(계속)", crowd: "혼잡", hand: "카드", timetable: "시간표",
     night: "숙박", nightSub: "21시〜다음 날 7시", morning: (h) => `다음 날 ${h}시`, hour: (h) => `${h}시`,
     mTime: "동네에 있던 시간", mMoney: "쓴 돈 (대략)", mCrowd: "혼잡 (주민의 불편)", mTotal: "합계", crowdNote: "혼잡: 불편이 적을수록 높은 점수",
-    hours: (h) => `${h}시간`, decide: "이 여행으로 결정", needMust: (n) => `「${n}」을(를) 넣으면 결정할 수 있습니다`, hintB: "힌트",
+    hours: (h) => `${h}시간`, sureQ: "★3 자신이 있으면 누르기", decide: "이 여행으로 결정", needMust: (n) => `「${n}」을(를) 넣으면 결정할 수 있습니다`, hintB: "힌트",
     stars: (s) => `별 ${s}개`, points: (n) => `${n}점`, topIs: (n) => `이 카드로 낼 수 있는 최고점은 ${n}점`, showTop: "최고점 짜는 법 보기", topTitle: "최고점 짜는 법의 한 예",
     next: "다음 손님", toResult: "결과 보기", quit: "여기서 그만",
     kou: {
@@ -1876,7 +1877,7 @@ function home() {
   const s = load(), k = todayKey(), done = s.days[k], hdone = s.hdays[k];
   for (const m of Object.keys(s.runs)) { const r = s.runs[m]; if (m !== "p" && m !== "e" && r && doneOf(r)) { MODE = m; return finish(); } }
   const late = lateDays(s, k), ag = achGot(s).length, fs = fsGet(), tip = tipOf(k), nk = tally(s).kinds;
-  const rd = s.runs.d && s.runs.d.date === k ? s.runs.d : null, rh = s.runs.h && s.runs.h.date === k ? s.runs.h : null, re = s.runs.e || null, rr = s.runs.r && !doneOf(s.runs.r) ? s.runs.r : null;
+  const rd = s.runs.d && s.runs.d.date === k ? s.runs.d : null, rh = s.runs.h && s.runs.h.date === k ? s.runs.h : null, re = s.runs.e || null;
   const st = streak(s.days), rv = Depth.count();
   app.innerHTML = `
     <div class="langs" role="group" aria-label="Language / 言語">${G.LANGS.map((l) => `<button data-l="${l}" aria-pressed="${l === L}" lang="${l}">${T[l].lang}</button>`).join("")}</div>
@@ -1888,7 +1889,7 @@ function home() {
     <button class="main" id="go-d">${done ? t("goDres") : rd ? t("goDcont")(rd.res.length + 1) : `${t("goD")} <small>${t("goDsub")(dayNo(k))}</small>`}</button>
     <button class="main alt" id="go-h">${hdone ? t("goHres") : rh ? t("goHcont") : t("goH")}</button>
     <button class="main alt" id="go-e">${re ? t("goEcont")(re.res.length + 1) : t("goE")}${s.ebest ? ` <small>${t("best")(s.ebest)}</small>` : ""}</button>
-    ${rr ? `<button class="main alt" id="go-r">${t("goRcont")(rr.res.length + 1)}</button>` : rv ? `<button class="main alt" id="go-r">${t("goR")(rv)} <small>${t("goRsub")}</small></button>` : ""}
+    ${s.runs.r && !doneOf(s.runs.r) ? `<button class="main alt" id="go-r">${t("goRcont")(s.runs.r.res.length + 1)}</button>` : rv ? `<button class="main alt" id="go-r">${t("goR")(rv)} <small>${t("goRsub")}</small></button>` : ""}
     <div class="row"><button class="sub" id="go-p">${t("goP")}</button><button class="sub" id="go-dex">${t("goDex")(nk, G.CARDS.length)}</button></div>
     <div class="row"><button class="sub" id="go-cal" aria-label="${esc(t("goCal"))}${late.length ? `（▶${late.length}）` : ""}">${t("goCal")}${late.length ? ` <span class="badge">▶${late.length}</span>` : ""}</button><button class="sub" id="go-ach">${t("goAch")(ag, ACH.length)}</button></div>
     <div class="facts"><div><b>${L === "en" ? "7.36M" : L === "ko" ? "약 736만 명" : "約736万人".replace("約", L === "zh" ? "约" : "約")}</b>${esc(t("factV"))}</div><div><b>93.8%</b>${esc(t("factD"))}</div></div>
@@ -2015,6 +2016,7 @@ function draw() {
       <div class="lv side">
         <div class="hint" id="hintbox" hidden></div>
         ${meters(sc, p)}
+        <div class="row" style="justify-content:flex-end;align-items:center;gap:8px"><span class="note" style="text-align:right">${esc(t("sureQ"))}</span>${Depth.sureHtml()}</div>
         <div class="row"><button class="sub" id="hint" style="flex:0 0 auto">💡 ${t("hintB")}</button><button class="main" id="decide"${mustOk && p.n ? "" : " disabled"}>${mustOk ? t("decide") : esc(t("needMust")(needed.map(cname).join("・")))}</button></div>
       </div>
     </div>
@@ -2025,7 +2027,10 @@ function draw() {
   document.querySelectorAll("#hand .card").forEach((b) => (b.onclick = () => { cur.sel = cur.sel === b.dataset.c ? null : b.dataset.c; redraw("#tt [data-put], #tt", !!cur.sel); }));
   document.querySelectorAll("[data-put]").forEach((b) => (b.onclick = () => { const id = cur.sel, at = +b.dataset.put; if (!id || !G.canPut(cur.place, id, at)) return toast(t("cantHere")); delete cur.place[id]; cur.place[id] = at; cur.sel = null; buzz(10); keep(); redraw(`[data-rm="${id}"]`); }));
   document.querySelectorAll("[data-rm]").forEach((b) => (b.onclick = () => { const id = b.dataset.rm; delete cur.place[id]; cur.sel = id; keep(); redraw(`#hand [data-c="${id}"]`); }));
-  $("hint").onclick = () => { const r = G.review(cur.place), hb = $("hintbox"); hb.hidden = false; hb.textContent = "💡 " + t("hint")[r.key]; };
+  $("hint").onclick = () => { const r = G.review(cur.place), hb = $("hintbox"); hb.hidden = false; hb.textContent = "💡 " + t("hint")[r.key]; if (!cur.hinted) { cur.hinted = true; Depth.mark(cur.tag, 1, t("who")[cur.g.who]); } }; // ヒントを使ったお客さんは、その時に復習へ入れる（閉じても残る）
+  // 自信をかける：★3になる自信があれば、決める前に押す（描き直しても押したままにする）
+  Depth.bindSure(cur.tag, cur.id + "|" + cur.i);
+  { const sb = $("dp-sure"); if (sb) { if (cur.sure) sb.click(); sb.addEventListener("click", () => { cur.sure = sb.getAttribute("aria-pressed") === "true"; }); } }
   $("decide").onclick = decide;
   bindFooter();
 }
@@ -2036,6 +2041,7 @@ function decide() {
   const g = cur.g; if (!g.must.every((m) => own(cur.place, m))) return;
   const sc = G.score(cur.place), top = G.best(g.hand, g.must), stars = G.starsOf(sc.total, top.total), m = 3 - stars;
   cur.done = true;
+  const jd = Depth.judge(stars === 3);
   let ok = false;
   save((s) => { const r = s.runs[MODE]; if (!same(r)) return; ok = true; r.res.push({ m, s: sc.total }); r.cur = null; s.plans = (s.plans || 0) + 1; for (const id of Object.keys(cur.place)) s.dex[id] = (s.dex[id] || 0) + 1; });
   if (!ok) return play();
@@ -2046,6 +2052,7 @@ function decide() {
     <div class="planner"><div class="lv">
     <div class="verdict" id="verdict"><div class="hd">${starStr(stars)}<span>${t("points")(sc.total)}</span></div>
       ${meters(sc, p)}
+      ${jd && jd.text ? `<p class="note" id="surestat">${esc(jd.text)}</p>` : ""}
       <p class="kou" id="kou">${esc(t("kou")[rv.key])}</p>
       <p class="note" id="top">${esc(t("topIs")(top.total))}</p>
       <button class="sub" id="showtop">${t("showTop")}</button>
