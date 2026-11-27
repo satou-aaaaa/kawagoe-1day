@@ -131,7 +131,7 @@
     const has = (f) => ids.some((id) => f(BY[id]));
     const notes = [];
     if (!has((c) => c.id === "tomari")) notes.push("stay");
-    if (!has((c) => c.from >= 9 && c.id !== "cafe") && !has((c) => c.id === "cafe" && place.cafe >= 9)) notes.push("night");
+    if (!cells(place).some((id, i) => id && i >= 9 && i < NIGHT && id !== "tomari")) notes.push("night"); // 18〜20時に置いたものだけを夜に数える
     if (!has((c) => c.area === "o")) notes.push("outer");
     if (p.load >= 12) notes.push("noon");
     if (!has((c) => c.from >= 13)) notes.push("morning");

@@ -1788,7 +1788,7 @@ function load() {
     v: 1, fresh, tidy, doneOf, bookOf,
     bank: (s, r) => !!(s.gone && s.gone[r.id]) || bank(s, r),
     after: (s) => { for (const m in s.runs) { const r = s.runs[m]; if (r && typeof r === "object" && s.gone && s.gone[r.id]) s.runs[m] = null; } },
-    prog: (r) => (r && r.res ? r.res.length : 0) * 1000 + (r && r.cur && r.cur.place ? Object.keys(r.cur.place).length : 0),
+    prog: (r) => (r && r.res ? r.res.length : 0), // 同じお客さんの途中は、置いた数で比べず新しい書き込み（n）を使う（外したカードが戻らないように）
   });
 }
 const num = Core.num; // 共通部品 game-core（配列・true を数にしない #410）
@@ -1878,7 +1878,7 @@ function home() {
   for (const m of Object.keys(s.runs)) { const r = s.runs[m]; if (m !== "p" && m !== "e" && r && doneOf(r)) { MODE = m; return finish(); } }
   const late = lateDays(s, k), ag = achGot(s).length, fs = fsGet(), tip = tipOf(k), nk = tally(s).kinds;
   const rd = s.runs.d && s.runs.d.date === k ? s.runs.d : null, rh = s.runs.h && s.runs.h.date === k ? s.runs.h : null, re = s.runs.e || null;
-  const st = streak(s.days), rv = Depth.count();
+  const st = streak(s.days), rv = Math.min(5, Depth.due().filter(G.validTag).length); // 復習は1回5人まで（startRun の r と同じ数）
   app.innerHTML = `
     <div class="langs" role="group" aria-label="Language / 言語">${G.LANGS.map((l) => `<button data-l="${l}" aria-pressed="${l === L}" lang="${l}">${T[l].lang}</button>`).join("")}</div>
     <div class="logo">${IMO}<h1 class="title">${t("title1")}<span>${t("title2")}</span></h1></div>
@@ -1995,7 +1995,7 @@ function play() {
   Core.screens.mark("play"); // 「戻る」でホームへ（sync-template の migrateBack）
   const s = load(), run = s.runs[MODE];
   if (!run) return home();
-  if (run.mode === "e" && run.res.length >= run.list.length - 1) { const more = moreList(run.list); save((s2) => { const r = s2.runs.e; if (r && r.id === run.id) r.list = r.list.concat(more); }); return play(); }
+  if (run.mode === "e" && run.res.length >= run.list.length - 1) { let more = moreList(run.list); if (!more.length) more = randomTags("h", 30, rid(), new Set()); let grew = false; save((s2) => { const r = s2.runs.e; if (r && r.id === run.id && more.length) { r.list = r.list.concat(more); grew = true; } }); if (grew) return play(); } // 足せなかったときは繰り返さない
   if (doneOf(run)) return finish();
   const i = run.res.length, tag = run.list[i], g = G.guest(tag);
   const was = run.cur && run.cur.i === i && run.cur.tag === tag ? run.cur : null;
@@ -2041,10 +2041,10 @@ function decide() {
   const g = cur.g; if (!g.must.every((m) => own(cur.place, m))) return;
   const sc = G.score(cur.place), top = G.best(g.hand, g.must), stars = G.starsOf(sc.total, top.total), m = 3 - stars;
   cur.done = true;
-  const jd = Depth.judge(stars === 3);
   let ok = false;
   save((s) => { const r = s.runs[MODE]; if (!same(r)) return; ok = true; r.res.push({ m, s: sc.total }); r.cur = null; s.plans = (s.plans || 0) + 1; for (const id of Object.keys(cur.place)) s.dex[id] = (s.dex[id] || 0) + 1; });
   if (!ok) return play();
+  const jd = Depth.judge(stars === 3); // 記録に入ったときだけ自信を判定する
   Depth.mark(cur.tag, m, t("who")[g.who]); // ★3に届かなかったお客さんは、次の日から「復習」にもどる
   const rv = G.review(cur.place), p = G.parts(cur.place), last = cur.mode !== "e" && cur.i + 1 >= cur.n;
   wide(true);
