@@ -1,0 +1,8 @@
+{
+  "screens": [
+    { "name": "今日のお客さん", "click": ["#go-d"] },
+    { "name": "練習", "click": ["#go-p"] },
+    { "name": "見どころ帳", "click": ["#go-dex"] },
+    { "name": "このゲームについて", "click": ["#f-about"] }
+  ]
+}

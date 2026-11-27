@@ -1,0 +1,23 @@
+{
+  "name": "川越1日プランナー",
+  "short_name": "川越1日",
+  "description": "朝9時から翌朝までの時間割にカードを置いて、川越の1日旅を組むゲーム",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FBF8F2",
+  "theme_color": "#FBF8F2",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
